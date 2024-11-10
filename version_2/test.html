@@ -9,7 +9,7 @@
 <body>
 
     <div class="main">
-        <h2>Checkbox, Text, and Buttons</h2>
+        <h2>식재료 입력</h2>
 
         <div class="row">
             <input type="checkbox">
@@ -71,17 +71,24 @@
         </div>
         <script>
             function submitData() {
-                const data = Array.from(document.querySelectorAll('.row'))
-                    .filter(row => row.querySelector('input[type="checkbox"]').checked)
-                    .map(row => {
-                        const storage = row.querySelector('input[type="radio"]:checked')?.value;
-                        return {
-                            name: row.querySelector('span').textContent,
-                            inside: storage === "냉장" ? 1 : 0,
-                            outside: storage === "냉동" ? 1 : 0,
-                            date: row.querySelector('input[type="date"]').value || '없음'     
-                        };
-                    });
+                const rows = Array.from(document.querySelectorAll('.row'))
+                    .filter(row => row.querySelector('input[type="checkbox"]').checked);
+
+                const incompleteRow = rows.some(row => !row.querySelector('input[type="radio"]:checked'));
+                if (incompleteRow) {
+                    alert("모든 체크된 항목에 대해 냉장 또는 냉동을 선택해 주세요.");
+                    return;
+                }
+
+                const data = rows.map(row => {
+                    const storage = row.querySelector('input[type="radio"]:checked').value;
+                    return {
+                        name: row.querySelector('span').textContent,
+                        inside: storage === "냉장" ? 1 : 0,
+                        outside: storage === "냉동" ? 1 : 0,
+                        date: row.querySelector('input[type="date"]').value || '없음'
+                    };
+                });
     
                 // 서버로 데이터 전송
                 fetch('http://localhost:3000/submit', {
