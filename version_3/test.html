@@ -37,7 +37,7 @@
 
                         // 식재료 이름 추가
                         const span = document.createElement('span');
-                        span.htmlFor = `item${index}`;
+                        span.htmlFor = `name${index}`;
                         span.textContent = name;
                         itemRow.appendChild(span);
 
@@ -72,8 +72,38 @@
                         const dateInput = document.createElement('input');
                         dateInput.type = 'date';
                         dateInput.name = `expiry${index}`;
-                        itemRow.appendChild(dateInput);
 
+                        //리스트가 출력 될 때 선택되어 있는 냉장 냉동에 따라 달력 값 지정
+                        if(defaultradio === '냉장'){
+                            const currentDate = new Date();
+                            currentDate.setDate(currentDate.getDate() + 14); // 2주 후
+                            dateInput.value = currentDate.toISOString().split('T')[0];
+                        }else if(defaultradio === '냉동'){
+                            const currentDate = new Date();
+                            currentDate.setMonth(currentDate.getMonth() + 1); // 한 달 후
+                            dateInput.value = currentDate.toISOString().split('T')[0];
+                        }
+
+                        //냉장 냉동을 선택할 경우 달력 날짜 기본 값 변경
+                        fridgeRadio.addEventListener('change', () => {
+                            if (fridgeRadio.checked) {
+                                // 냉장이 선택된 경우 현재 날짜 기준으로 2주 후
+                                const currentDate = new Date();
+                                currentDate.setDate(currentDate.getDate() + 14); // 2주 후
+                                dateInput.value = currentDate.toISOString().split('T')[0];
+                                    }
+                                });
+
+                        freezeRadio.addEventListener('change', () => {
+                            if (freezeRadio.checked) {
+                                // 냉동이 선택된 경우 현재 날짜 기준으로 한 달 후
+                                const currentDate = new Date();
+                                currentDate.setMonth(currentDate.getMonth() + 1); // 한 달 후
+                                dateInput.value = currentDate.toISOString().split('T')[0];
+                                }
+                            });
+                            
+                        itemRow.appendChild(dateInput);
                         form.appendChild(itemRow);
                     });
                 }catch(error) {
