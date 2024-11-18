@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>식재료 목록</title>
+    <link rel="stylesheet" href="ingredients.css" />
+</head>
+<body>
+    <div class="main">
+        <h2>냉장 식재료</h2>
+        <div id="fridge"></div> <!-- 냉장 식재료 출력 영역 -->
+        <h2>냉동 식재료</h2>
+        <div id="freeze"></div> <!-- 냉동 식재료 출력 영역 -->
+    </div>
+
+    <script>
+        async function loadIngredients() {
+            try {
+                const response = await fetch('http://localhost:3000/ingredients');
+                const data = await response.json();
+                
+                // 냉장 식재료 출력
+                const fridgeContainer = document.getElementById('fridge');
+                data.fridge.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'ingredient';
+                    const date = item.date.split('T')[0];
+                    itemDiv.textContent = `${item.name} - 유통기한: ${date}`;
+                    fridgeContainer.appendChild(itemDiv);
+                });
+
+                // 냉동 식재료 출력
+                const freezeContainer = document.getElementById('freeze');
+                data.freeze.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'ingredient';
+                    const date = item.date.split('T')[0];
+                    itemDiv.textContent = `${item.name} - 유통기한: ${date}`;
+                    freezeContainer.appendChild(itemDiv);
+                });
+            } catch (error) {
+                console.error('Error loading ingredients:', error);
+            }
+        }
+
+        // 페이지 로드 시 데이터 불러오기
+        window.onload = loadIngredients;
+    </script>
+</body>
+</html>
