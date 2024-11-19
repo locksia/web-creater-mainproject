@@ -7,7 +7,8 @@ const port = 3000;
 
 // MySQL 연결 설정
 const db = mysql.createConnection({
-    host: 'localhost',
+    host: '220.69.240.35',
+    port: '3306',
     user: 'root',
     password: '',
     database: 'test',
@@ -16,7 +17,7 @@ const db = mysql.createConnection({
 
 db.connect(err => {
     if (err) {
-        console.error('MySQL connection error:', err); 
+        console.error('MySQL connection error:', err);
         return;
     }
     console.log('MySQL Connected...');
