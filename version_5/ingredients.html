@@ -32,7 +32,7 @@
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'todayIngredient';
                 const date = item.expirationDate.split('T')[0]; // 날짜만 표시
-                itemDiv.textContent = `${item.name} - 유통기한: ${date}`;
+                itemDiv.innerHTML = `${item.name}<br>유통기한: ${date} <br>사용횟수: ${item.uses}`;
                 todayFridgeContainer.appendChild(itemDiv);
                 });
 
@@ -41,7 +41,7 @@
                     const itemDiv = document.createElement('div');
                     itemDiv.className = 'ingredient';
                     const date = item.expirationDate.split('T')[0];
-                    itemDiv.textContent = `${item.name} - 유통기한: ${date}`;
+                    itemDiv.innerHTML = `${item.name}<br>유통기한: ${date} <br>사용횟수: ${item.uses}`;
                     fridgeContainer.appendChild(itemDiv);
                 });
 
@@ -50,7 +50,7 @@
                     const itemDiv = document.createElement('div');
                     itemDiv.className = 'todayIngredient';
                     const date = item.expirationDate.split('T')[0];
-                    itemDiv.textContent = `${item.name} - 유통기한: ${date}`;
+                    itemDiv.innerHTML = `${item.name} <br>유통기한: ${date} <br>사용횟수: ${item.uses}`;
                     todayFreezeContainer.appendChild(itemDiv);
                 });
 
@@ -59,7 +59,7 @@
                     const itemDiv = document.createElement('div');
                     itemDiv.className = 'ingredient';
                     const date = item.expirationDate.split('T')[0];
-                    itemDiv.textContent = `${item.name} - 유통기한: ${date}`;
+                    itemDiv.innerHTML = `${item.name}<br>유통기한: ${date} <br>사용횟수: ${item.uses}`;
                     freezeContainer.appendChild(itemDiv);
                 });
                 
