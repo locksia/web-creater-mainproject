@@ -1,0 +1,27 @@
+/* test.css */
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+h2 {
+    margin-top: 20px;
+}
+
+#refrigerated, #frozen {
+    margin-bottom: 20px;
+}
+
+.ingredient {
+    padding: 8px;
+    margin-bottom: 10px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+}
+
+.todayIngredient{
+    padding: 8px;
+    margin-bottom: 10px;
+    background-color: #4CAF50;
+    border-radius: 4px;
+}
