@@ -12,16 +12,30 @@ h2 {
     margin-bottom: 20px;
 }
 
-.ingredient {
-    padding: 8px;
-    margin-bottom: 10px;
-    background-color: #f0f0f0;
-    border-radius: 4px;
+.todayIngredient {
+    width: 200px; /* 너비 설정 */
+    height: 120px; /* 높이 설정 */
+    background-color: #87CEEB; /* 눈에 띄는 색 */
+    margin: 15px; /* 항목 간 간격 */
+    padding: 10px; /* 내부 여백 */
+    display: inline-block; /* 가로 정렬 */
+    border-radius: 10px; /* 부드러운 모서리 */
+    text-align: left; /* 텍스트 가운데 정렬 */
+    color: #fff; /* 텍스트 색상 */
+    font-weight: bold; /* 굵은 텍스트 */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
 }
 
-.todayIngredient{
-    padding: 8px;
-    margin-bottom: 10px;
-    background-color: #4CAF50;
-    border-radius: 4px;
+.ingredient{
+    width: 200px; /* 너비 설정 */
+    height: 120px; /* 높이 설정 */
+    background-color: #f0f0f0; /* 눈에 띄는 색 */
+    margin: 15px; /* 항목 간 간격 */
+    padding: 10px; /* 내부 여백 */
+    display: inline-block; /* 가로 정렬 */
+    border-radius: 10px; /* 부드러운 모서리 */
+    text-align: left; /* 텍스트 가운데 정렬 */
+    color: #050000; /* 텍스트 색상 */
+    font-weight: bold; /* 굵은 텍스트 */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
 }
