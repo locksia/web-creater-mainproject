@@ -1,0 +1,167 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f0f8ff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.header {
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+.title {
+    font-size: 36px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0;
+}
+.register-btn {
+    background-color: #ff6f61;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    transition: background-color 0.3s;
+}
+.register-btn:hover {
+    background-color: #e55d4d;
+}
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* 왼쪽 정렬 */
+    justify-content: flex-start; /* 위쪽 정렬 */
+    width: 90%;
+    max-width: 1200px;
+    margin-top: 20px;
+}
+
+.content {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+.fridge-notification-wrapper {
+    display: flex; /* 냉장고와 알림을 나란히 배치 */
+    justify-content: space-between; /* 공간 분리 */
+    align-items: flex-start; /* 위쪽 정렬 */
+    width: 90%; /* 전체 너비 */
+    gap: 20px; /* 냉장고와 알림 사이의 간격 */
+}
+.fridge-open {
+    display: flex;
+    justify-content: space-between;
+    width: 1800px;
+    height: 700px;
+    border: 2px solid #8bb8d0;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #d0efff;
+}
+.freeze-section,
+.fridge-section {
+    flex: 1;
+    padding: 20px;
+    border-right: 1px solid #b0c4de;
+    background-color: #e6f7ff;
+    overflow-y: auto;
+    max-height: 100%;
+    display: flex;
+    flex-wrap: wrap; /* 선반을 여러 줄로 배치 */
+    gap: 10px; /* 선반 사이의 간격 */
+    align-items: flex-start; /* 선반을 위쪽 정렬 */
+}
+.fridge-section {
+    border-right: none;
+}
+.notification {
+    width: 250px; /* 알림창 너비 */
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.notification-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.notification-content {
+    font-size: 14px;
+    color: #555;
+}
+.section-title {
+    font-size: 24px;
+    font-weight: bold;
+    width: 100%;
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+/* 알림창 스타일 */
+.notification {
+    width: 250px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.notification-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.notification-content {
+    font-size: 14px;
+    color: #555;
+}
+/* 추천 레시피 공간 스타일 */
+.recipe-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.recipe-section {
+    width: 800px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+.recipe-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+.recipe-content {
+    font-size: 16px;
+    color: #555;
+}
+/* 사용 버튼 스타일 */
+.use-btn {
+    background-color: #ff6f61;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.use-btn:hover {
+    background-color: #e55d4d;
+}
