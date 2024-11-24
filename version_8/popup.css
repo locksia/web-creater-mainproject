@@ -1,0 +1,56 @@
+/* 전체 팝업 배경 */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #d3d3d3; /* 회색 배경 */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* 팝업 컨테이너 */
+.popup-container {
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    padding: 20px;
+    width: 600px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* 업로드 영역 */
+.upload-area {
+    background-color: #ffffff;
+    border: 2px dashed #aaa;
+    border-radius: 15px;
+    width: 100%;
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #555;
+    font-size: 18px;
+    text-align: center;
+}
+
+/* 변환 버튼 */
+.convert-btn {
+    background-color: #79a7d3; /* 파란빛 버튼 */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.convert-btn:hover {
+    background-color: #5a91c8; /* 버튼 호버 시 색상 */
+}

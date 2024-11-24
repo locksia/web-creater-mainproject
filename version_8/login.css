@@ -1,0 +1,89 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.container {
+    background-color: #e8e8e8;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    text-align: center;
+    width: 80%;
+    max-width: 900px;
+    position: relative;
+}
+.title {
+    font-size: 32px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 30px;
+}
+.login-btn {
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    transition: background-color 0.3s;
+}
+.login-btn:hover {
+    background-color: #357ab7;
+}
+.fridge {
+    width: 400px;
+    height: 600px;
+    display: flex;
+    flex-wrap: wrap;
+    perspective: 1200px; /* 3D 효과를 위한 관점 설정 */
+    position: relative;
+    margin: 0 auto;
+}
+.fridge-door {
+    width: 50%;
+    height: 50%;
+    background-color: #b0bec5;
+    border: 1px solid #90a4ae;
+    position: relative;
+    transition: transform 1s ease;
+    transform-origin: center;
+}
+.fridge-door.top-left {
+    transform-origin: left top;
+}
+.fridge-door.top-right {
+    transform-origin: right top;
+}
+.fridge-door.bottom-left {
+    transform-origin: left bottom;
+}
+.fridge-door.bottom-right {
+    transform-origin: right bottom;
+}
+/* 문이 열리는 애니메이션 */
+.open-top-left {
+    transform: rotateY(-120deg);
+}
+.open-top-right {
+    transform: rotateY(120deg);
+}
+.open-bottom-left {
+    transform: rotateY(-120deg);
+}
+.open-bottom-right {
+    transform: rotateY(120deg);
+}

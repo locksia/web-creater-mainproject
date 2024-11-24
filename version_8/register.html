@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>재료  추가하기</title>
+    <link rel="stylesheet" href="register.css"> <!-- 기존 CSS 연결 -->
+</head>
+<body>
+    <!-- 재료 입력 영역 -->
+    <div class="main">
+        <h2>식재료 입력</h2>
+        <div class="content-container">
+            <!-- 왼쪽 이미지 -->
+            <div class="image-container">
+                <img src="uploads/영수증.PNG" alt="이미지 미리보기" id="ingredientImage">
+            </div>
+            
+            <!-- 오른쪽 입력 폼 -->
+            <div class="form-container">
+                <form id="ingredientForm"></form>
+            </div>
+        </div>
+        <div class="button-container">
+            <button onclick="submitData()">등록</button>
+            <button onclick="ingredient_page()">재등록</button>
+        </div>
+    </div>
+
+    <script>
+        // 재료 입력 및 관리 기능
+        async function loadIngredients() {
+            try {
+                const response = await fetch('uploads/재료목록.txt'); // 재료 목록 파일
+                const text = await response.text();
+                const ingredients = text.split('\n').filter(item => item.trim() !== '');
+
+                const form = document.getElementById('ingredientForm');
+
+                // 각 재료 항목 생성
+                ingredients.forEach((ingredient, index) => {
+                    const [defaultradio, name] = ingredient.split(':');
+
+                    const itemRow = document.createElement('div');
+                    itemRow.className = 'row';
+
+                    // 체크박스 추가
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    itemRow.appendChild(checkbox);
+
+                    // 식재료 이름 추가
+                    const names = document.createElement('input');
+                    names.type = 'text'; // 텍스트 입력 필드로 설정
+                    names.value = name; // 기존 name 값 설정
+                    itemRow.appendChild(names);
+
+                    // 냉장 라디오 버튼 추가
+                    const fridgeLabel = document.createElement('label');
+                    const fridgeRadio = document.createElement('input');
+                    fridgeRadio.type = 'radio';
+                    fridgeRadio.name = `storage${index}`;
+                    fridgeRadio.value = '냉장';
+                    if (defaultradio === '냉장') {
+                        fridgeRadio.checked = true;
+                    }
+                    fridgeLabel.appendChild(fridgeRadio);
+                    fridgeLabel.appendChild(document.createTextNode(' 냉장'));
+                    itemRow.appendChild(fridgeLabel);
+
+                    // 냉동 라디오 버튼 추가
+                    const freezeLabel = document.createElement('label');
+                    const freezeRadio = document.createElement('input');
+                    freezeRadio.type = 'radio';
+                    freezeRadio.name = `storage${index}`;
+                    freezeRadio.value = '냉동';
+                    if (defaultradio === '냉동') {
+                        freezeRadio.checked = true;
+                    }
+                    freezeLabel.appendChild(freezeRadio);
+                    freezeLabel.appendChild(document.createTextNode(' 냉동'));
+                    itemRow.appendChild(freezeLabel);
+
+                    // 유통기한 입력란 추가
+                    itemRow.appendChild(document.createTextNode(' 유통기한: '));
+                    const dateInput = document.createElement('input');
+                    dateInput.type = 'date';
+                    dateInput.name = `expiry${index}`;
+
+                    if (defaultradio === '냉장') {
+                        const currentDate = new Date();
+                        currentDate.setDate(currentDate.getDate() + 14); // 2주 후
+                        dateInput.value = currentDate.toISOString().split('T')[0];
+                    } else if (defaultradio === '냉동') {
+                        const currentDate = new Date();
+                        currentDate.setMonth(currentDate.getMonth() + 1); // 1개월 후
+                        dateInput.value = currentDate.toISOString().split('T')[0];
+                    }
+
+                    fridgeRadio.addEventListener('change', () => {
+                        if (fridgeRadio.checked) {
+                            const currentDate = new Date();
+                            currentDate.setDate(currentDate.getDate() + 14); // 2주 후
+                            dateInput.value = currentDate.toISOString().split('T')[0];
+                        }
+                    });
+
+                    freezeRadio.addEventListener('change', () => {
+                        if (freezeRadio.checked) {
+                            const currentDate = new Date();
+                            currentDate.setMonth(currentDate.getMonth() + 1); // 1개월 후
+                            dateInput.value = currentDate.toISOString().split('T')[0];
+                        }
+                    });
+
+                    itemRow.appendChild(dateInput);
+                    form.appendChild(itemRow);
+                });
+            } catch (error) {
+                console.error('재료 목록을 가져오는 중 오류 발생:', error);
+            }
+        }
+
+        function submitData() {
+            const rows = Array.from(document.querySelectorAll('.row'))
+                .filter(row => row.querySelector('input[type="checkbox"]').checked);
+
+            if (rows.length === 0) {
+                alert("최소 하나의 식재료를 체크 또는 재등록 해 주세요");
+                return;
+            }
+
+            const incompleteRow = rows.some(row => !row.querySelector('input[type="radio"]:checked'));
+            if (incompleteRow) {
+                alert("모든 체크된 항목에 대해 냉장 또는 냉동을 선택해주세요.");
+                return;
+            }
+
+            const data = rows.map(row => {
+                const storage = row.querySelector('input[type="radio"]:checked').value;
+                return {
+                    name: row.querySelector('input[type="text"]').value,
+                    fridge: storage === "냉장" ? 1 : 0,
+                    freeze: storage === "냉동" ? 1 : 0,
+                    date: row.querySelector('input[type="date"]').value || '없음',
+                };
+                console.log(name)
+            });
+
+            fetch('http://localhost:3000/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ rows: data })
+            })
+            .then(response => response.json())
+            .then(result => {
+                alert(result.message);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        function ingredient_page() {
+            window.location.href = 'popup.html';
+        }
+
+        window.onload = loadIngredients;
+    </script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f0f8ff;
+    display: flex;
+    flex-direction: column; /* 제목과 컨테이너를 위아래로 배치 */
+    align-items: center; /* 수평 중앙 정렬 */
+    height: 100vh; /* 화면 전체 높이 */
+    margin: 0; /* 기본 마진 제거 */
+}
+
+.title {
+    font-size: 36px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 20px; /* 제목과 냉장고 간격 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* 내부 왼쪽 정렬 */
+    justify-content: flex-start; /* 내부 위쪽 정렬 */
+    width: 90%;
+    max-width: 1500px;
+    background-color: #ffffff; /* 필요 시 배경색 추가 */
+    border-radius: 10px; /* 필요 시 모서리 둥글게 */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* 필요 시 그림자 추가 */
+    padding: 20px; /* 내부 여백 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+.fridge-open {
+    display: flex;
+    width: 1500px; /* 전체 너비 */
+    height: 650px;
+    border: 2px solid #8bb8d0;
+    border-radius: 10px;
+    background-color: #d0efff;
+    padding-bottom: 100px;
+}
+
+.down-open{
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    width: 1500px;
+    height: 150px;
+    border: 2px solid #8bb8d0;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #d0efff;
+}
+
+.scroll-container {
+    max-height: 100%; /* 부모 높이에 맞춤 */
+    max-width:100%;
+    overflow-y: auto; /* 세로 스크롤 활성화 */
+    overflow-x: hidden; /* 가로 스크롤 숨김 */
+    box-sizing: border-box; /* 패딩과 경계 포함한 너비 계산 */
+    border: 1px solid #ccc; /* 스크롤 컨테이너 구분선 */
+    background-color: #f9f9f9; /* 배경색 */
+}
+
+#freeze-shelves-container {
+    margin-left: 0; /* 왼쪽 밀림 없애기 */
+}
+
+.freeze-section,
+.fridge-section {
+    width: 710px;
+    padding: 20px;
+    padding-right: 0px;
+    border-right: 1px solid #b0c4de;
+    background-color: #e6f7ff;
+    overflow-y: auto;
+    max-height: 100%;
+    display: flex;
+    flex-wrap: wrap; /* 선반을 여러 줄로 배치 */
+    gap: 10px; /* 선반 사이의 간격 */
+    align-items: flex-start; /* 선반을 위쪽 정렬 */
+}
+
+.fridge-section {
+    border-right: none;
+}
+/*레시피 추천*/
+.recipe-container {
+    position: absolute; /* 위치를 정확히 지정 */
+    bottom: 35px; /* 냉장고 아래에서 간격 */
+    left: 210px; /* 냉장고 왼쪽에 정렬 */
+    width: 700px; 
+    height: 100px;
+    background-color: #ffffff; /* 흰 배경 */
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.recipe-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 0px;
+    color: #2c3e50;
+    text-align: left;
+    margin-left: 10px;
+    margin-top: 0px;
+}
+
+.receipt-section {
+    text-align: left;
+    margin-left: 10px;
+}
+
+
+/*사용 버튼*/
+.use-btn , .register-btn{
+    position: absolute; /* 위치를 정확히 지정 */
+    left: 1000px; /* 냉장고 왼쪽에 정렬 */
+    width: 200px; 
+    height: 80px;
+    background-color: #ff6f61;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 20px; /* 버튼 글꼴 크기 조정 */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    background-color: #e55d4d;
+}
+
+.use-btn:hover, .register-btn:hover {
+    background-color: #e55d4d;
+}
+
+
+.use-btn {
+    bottom: 35px; /* 기준 div 아래 */
+    left: 2500; /* 기준 div 왼쪽 */
+}
+
+.register-btn {
+    bottom: 35px; /* 기준 div 아래 */
+    left: 1275px; /* use-btn 오른쪽 */
+}
+
+.recipe-container{
+    bottom: 20px; /* 기준 div 아래 */
+    left: 30px;
+}

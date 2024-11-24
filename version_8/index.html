@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D 냉장고 애니메이션</title>
+    <link rel="stylesheet" href="login.css"> <!-- 통합된 CSS 파일 -->
+    <script>
+        function openFridge() {
+            // 네 개의 냉장고 문에 입체 애니메이션 클래스 추가
+            document.querySelector('.fridge-door.top-left').classList.add('open-top-left');
+            document.querySelector('.fridge-door.top-right').classList.add('open-top-right');
+            document.querySelector('.fridge-door.bottom-left').classList.add('open-bottom-left');
+            document.querySelector('.fridge-door.bottom-right').classList.add('open-bottom-right');
+
+            // 일정 시간 후 메인 페이지로 이동
+            setTimeout(() => {
+                window.location.href = "main.html"; // main.html로 이동
+            }, 1000); // 1초 후 메인 화면으로 전환
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <button class="login-btn" onclick="openFridge()">로그인</button>
+        <div class="title">나만의 드림 냉장고</div>
+        <div class="fridge">
+            <div class="fridge-door top-left"></div>
+            <div class="fridge-door top-right"></div>
+            <div class="fridge-door bottom-left"></div>
+            <div class="fridge-door bottom-right"></div>
+        </div>
+    </div>
+</body>
+</html>
