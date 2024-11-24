@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나만의 드림 냉장고</title>
+    <link rel="stylesheet" href="main.css"> <!-- 메인 스타일 -->
+    <link rel="stylesheet" href="shelf.css"> <!-- 선반 스타일 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery 포함 -->
+</head>
+<body>
+    <div class="header">
+        <h1 class="title">나만의 드림 냉장고</h1>
+        <button class="register-btn">재료 등록하기</button>
+    </div>
+    <div class="main-container">
+        <!-- 냉동/냉장실과 알림 섹션을 포함하는 래퍼 -->
+        <div class="fridge-notification-wrapper">
+            <!-- 냉동/냉장실 -->
+            <div class="fridge-open">
+                <!-- 냉동실 -->
+                <div id="freeze-section" class="shelf-container">
+                    <h2 class="section-title">냉동실</h2>
+                    <div id="todayFreeze" class="freeze-section"></div>
+                    <div id="freeze-shelves" class="freeze-section"></div>
+                </div>
+                <!-- 냉장실 -->
+                <div id="fridge-section" class="shelf-container">
+                    <h2 class="section-title">냉장실</h2>
+                    <div id="todayFridge" class="fridge-section"></div>
+                    <div id="fridge-shelves" class="fridge-section"></div>
+                </div>
+            </div>
+            <!-- 알림 -->
+            <div class="notification">
+                <h3 class="notification-title">알림</h3>
+                <p class="notification-content">여기에 알림 내용을 표시합니다.</p>
+                <div id="call"></div>
+            </div>
+        </div>
+    </div>    
+        <!-- 추천 레시피 -->
+        <div class="recipe-container">
+            <div class="recipe-section">
+                <h2 class="recipe-title">추천 레시피</h2>
+                <div class="recipe-content">여기에 추천 레시피를 표시합니다.</div>
+            </div>
+            <button id="use-btn" class="use-btn">사용</button> <!-- 추천 레시피의 사용 버튼 -->
+        </div>
+    </div>
+
+    <!-- 동적 데이터 로드 및 이벤트 처리 스크립트 -->
+    <script>
+        let buttonsVisible = false; // 버튼이 현재 표시 중인지 상태를 저장
+
+        async function loadIngredients() {
+            try {
+                const response = await fetch('http://localhost:3000/ingredients'); // API 호출
+                const data = await response.json();
+                document.getElementById('todayFridge').innerHTML = '';
+                document.getElementById('fridge-shelves').innerHTML = '';
+                document.getElementById('todayFreeze').innerHTML = '';
+                document.getElementById('freeze-shelves').innerHTML = '';
+                // 냉장실 데이터 추가
+                const fridgeContainer = document.getElementById('fridge-shelves');
+                data.fridge.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'shelf';
+                    itemDiv.setAttribute('id',item.id)
+                    itemDiv.innerHTML = `
+                        <img src="${item.image || 'path/to/default_image.jpg'}">
+                        <div class="name">${item.name}</div>
+                        <div class="expiry-date">유통기한: ${item.expirationDate.split('T')[0]}</div>
+                        <div class="usage-count">사용횟수: ${item.uses || 0}회</div>
+                    `;
+                    fridgeContainer.appendChild(itemDiv);
+                });
+
+                // 냉동실 데이터 추가
+                const freezeContainer = document.getElementById('freeze-shelves');
+                data.freeze.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'shelf';
+                    itemDiv.setAttribute('id',item.id)
+                    itemDiv.innerHTML = `
+                        <img src="${item.image || 'path/to/default_image.jpg'}">
+                        <div class="name">${item.name}</div>
+                        <div class="expiry-date">유통기한: ${item.expirationDate.split('T')[0]}</div>
+                        <div class="usage-count">사용횟수: ${item.uses || 0}회</div>
+                    `;
+                    freezeContainer.appendChild(itemDiv);
+                });
+                // 오늘 추가한 냉장 식품
+                const todayFridgeContainer = document.getElementById('todayFridge');
+                data.todayFridge.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'shelf';
+                    itemDiv.setAttribute('id',item.id)
+                    itemDiv.innerHTML = `
+                        <img src="${item.image || 'path/to/default_image.jpg'}">
+                        <div class="name">${item.name}</div>
+                        <div class="expiry-date">유통기한: ${item.expirationDate.split('T')[0]}</div>
+                        <div class="usage-count">사용횟수: ${item.uses || 0}회</div>
+                    `;
+                    todayFridgeContainer.appendChild(itemDiv);
+                });
+                const todayFreezeContainer = document.getElementById('todayFreeze');
+                data.todayFreeze.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'shelf';
+                    itemDiv.setAttribute('id',item.id)
+                    itemDiv.innerHTML = `
+                        <img src="${item.image || 'path/to/default_image.jpg'}">
+                        <div class="name">${item.name}</div>
+                        <div class="expiry-date">유통기한: ${item.expirationDate.split('T')[0]}</div>
+                        <div class="usage-count">사용횟수: ${item.uses || 0}회</div>
+                    `;
+                    todayFreezeContainer.appendChild(itemDiv);
+                });
+            } catch (error) {
+                console.error('Error loading ingredients:', error);
+                alert('재료 데이터를 가져오는 데 실패했습니다.');
+            }
+        }
+        // 서버에서 데이터 가져오기
+        $.get('http://localhost:3000/getIngredients', function(data) {
+            console.log(data);  // 데이터가 잘 받아졌는지 확인
+
+            if (data.length > 0) {
+                let notificationContent = '<ul>';
+                data.forEach(function(ingredient) {
+                    notificationContent += `<li>${ingredient.name}: ${ingredient.remainingDays}일 남음</li>`;
+                });
+                notificationContent += '</ul>';
+                $('#call').html(notificationContent);
+            } else {
+                $('#call').html('남은 유효기간이 3일 이하인 재료가 없습니다.');
+            }
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            console.log('데이터 요청 실패:', textStatus, errorThrown);
+            $('#call').html('서버로부터 데이터를 가져오는 데 실패했습니다.');
+        });
+
+        // 추천 레시피의 "사용" 버튼 클릭 이벤트
+        document.addEventListener('DOMContentLoaded', () => {
+            const useButton = document.getElementById('use-btn');
+            useButton.addEventListener('click', () => {
+                // 버튼 상태에 따라 추가 또는 제거
+                if (!buttonsVisible) {
+                    // 버튼이 없는 상태 -> 추가
+                    document.querySelectorAll('.shelf').forEach(shelf => {
+                        addActionButtons(shelf);
+                    });
+                } else {
+                    // 버튼이 있는 상태 -> 제거
+                    document.querySelectorAll('.shelf .action-btn-container').forEach(container => {
+                        container.remove();
+                    });
+                }
+                buttonsVisible = !buttonsVisible; // 상태 토글
+            });
+        });
+
+        // 버튼 1과 버튼 2를 선반에 추가하는 함수
+        function addActionButtons(shelf) {
+            // 버튼 컨테이너 생성
+            const btnContainer = document.createElement('div');
+            btnContainer.className = 'action-btn-container'; // 식별을 위한 클래스
+            btnContainer.style.display = 'flex';
+            btnContainer.style.gap = '10px';
+            btnContainer.style.marginTop = '10px';
+
+            // 첫 번째 버튼 생성
+            const btn1 = document.createElement('button');
+            btn1.textContent = '일부 사용';
+            btn1.className = 'action-btn';
+            //버튼마다 이벤트 연결해야겠죠^^
+            btn1.onclick = (e) => {
+                const shelfDiv = e.target.closest('.shelf'); // 상위 shelf div 찾기
+                const id = shelfDiv.getAttribute('id');   // id 값 가져오기
+                halfUse(id);
+            };
+
+            // 두 번째 버튼 생성
+            const btn2 = document.createElement('button');
+            btn2.textContent = '모두 사용';
+            btn2.className = 'action-btn';
+            //버튼마다 이벤트 연결해야겠죠^^
+            btn2.onclick = (e) => {
+                const shelfDiv = e.target.closest('.shelf'); // 상위 shelf div 찾기
+                const id = shelfDiv.getAttribute('id');   // id 값 가져오기
+                fullUse(id);
+            };
+
+            btnContainer.appendChild(btn1);
+            btnContainer.appendChild(btn2);
+            shelf.appendChild(btnContainer);
+        }
+        //일부사용 함수
+        // 누르면 DB를 통해 사용횟수 증가 이벤트
+        function halfUse(id) {
+            fetch('http://localhost:3000/ingredients/halfUse', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id }), // 항목 ID 전달
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('일부 사용 처리 완료!');
+                    // 일부 사용 처리 후 UI에서 해당 항목의 사용횟수만 갱신
+                    const shelfDiv = document.querySelector(`.shelf[id="${id}"]`);
+                    if (shelfDiv) {
+                        const usageCount = shelfDiv.querySelector('.usage-count');
+                        if (usageCount) {
+                            let currentUses = parseInt(usageCount.textContent.replace('사용횟수: ', '').replace('회', '')) || 0;
+                            currentUses += 1; // 사용횟수 증가
+                            usageCount.textContent = `사용횟수: ${currentUses}회`;
+                        }
+                    }
+                } else {
+                    alert('사용 처리 중 오류가 발생했습니다.');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating ingredient use:', error);
+                alert('서버 오류로 인해 요청을 처리할 수 없습니다.');
+            });
+        }
+
+
+        function fullUse(id){
+            fetch('http://localhost:3000/ingredients/fullUse',{
+                method:'post',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id }), // 항목 ID 전달
+                })
+            .then(response => response.json())
+            .then(data =>{
+                if (data.success) {
+                    alert('모두 사용 처리 완료!');
+                    // UI에서 해당 항목 즉시 삭제
+                    const shelfDiv = document.querySelector(`.shelf[id="${id}"]`);
+                    if (shelfDiv) {
+                        shelfDiv.remove(); // 해당 항목 삭제
+                    }
+                } else {
+                    alert('사용 처리 중 오류가 발생했습니다.');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating ingredient use:', error);
+                alert('서버 오류로 인해 요청을 처리할 수 없습니다.');
+            });
+        }
+
+
+        // 페이지 로드 시 데이터 불러오기
+        window.onload = loadIngredients;
+    </script>
+</body>
+</html>
