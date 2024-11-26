@@ -1,0 +1,128 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+  }
+  
+  .fridge {
+    position: relative;
+    width: 400px; /* 냉장고 너비를 더 넓게 */
+    height: 600px; /* 높이는 이전 크기 유지 */
+    background-color: #ddd;
+    border: 3px solid #bbb;
+    border-radius: 15px;
+    display: flex;
+  }
+  
+  .door {
+    position: absolute;
+    width: 200px; /* 왼쪽 문 너비를 냉장고 너비의 절반으로 */
+    height: 100%; /* 문 높이는 냉장고와 동일 */
+    background-color: #aaa;
+    border-right: 5px solid #888;
+    border-radius: 15px 0 0 15px;
+    transition: transform 0.5s ease-in-out;
+    transform-origin: left center; /* 왼쪽 문 회전 중심 */
+  }
+  
+  .door-right {
+    position: absolute;
+    right: 0; /* 오른쪽에 위치 */
+    width: 200px; /* 오른쪽 문 너비를 냉장고 너비의 절반으로 */
+    height: 100%;
+    background-color: #aaa;
+    border-left: 5px solid #888;
+    border-radius: 0 15px 15px 0;
+    transition: transform 0.5s ease-in-out;
+    transform-origin: right center; /* 오른쪽 문 회전 중심 */
+  }
+  
+  .body {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #eee;
+    z-index: -1;
+  }
+  
+  .handle {
+    position: absolute;
+    width: 20px; /* 손잡이 너비 */
+    height: 100px; /* 손잡이 높이 */
+    background-color: #444;
+    border-radius: 10px;
+    top: 50%; /* 문 중앙에 위치 */
+    transform: translateY(-50%);
+  }
+  
+  .door .handle {
+    right: 20px; /* 왼쪽 문 손잡이 */
+  }
+  
+  .door-right .handle {
+    left: 20px; /* 오른쪽 문 손잡이 */
+  }
+  
+  /* 로그인 공간 */
+  .login-space {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    z-index: 10;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* 버튼 컨테이너 */
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+/* 버튼 스타일 */
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+}
+
+button[type="button"] {
+    background-color: #f44336;
+    color: white;
+}
+
+button:hover {
+    opacity: 0.9;
+}

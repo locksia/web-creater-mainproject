@@ -1,0 +1,68 @@
+/* 종 아이콘 */
+.notification-icon {
+    position: fixed; /* 페이지 오른쪽 위에 고정 */
+    top: 20px;
+    right: 20px;
+    font-size: 48px; /* 종 아이콘 크기 키움 */
+    cursor: pointer;
+    color: #0000ff; /* 종 아이콘 파란색으로 변경 */
+    padding: 10px;
+}
+
+.notification-alert {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: #f00;
+    color: white;
+    font-size: 18px; /* 배지 크기 키움 */
+    font-weight: bold;
+    width: 24px;
+    height: 24px;
+    display: block; /* 알림 배지 표시 */
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* 알림 팝업 */
+.notification-popup {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    width: 300px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: none; /* 초기에는 숨김 */
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #f0f8ff;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+}
+
+.popup-content {
+    padding: 10px;
+    font-size: 14px;
+    color: #333;
+    overflow-y: auto;
+    max-height: 200px;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: #555;
+}

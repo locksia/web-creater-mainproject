@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나만의 Dream 냉장고</title>
+    <link rel="stylesheet" href="main.css"> <!-- 메인 스타일 -->
+    <link rel="stylesheet" href="shelf.css"> <!-- 선반 스타일 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery 포함 -->
+    <!-- 알림 관련 CSS 연결 -->
+    <link rel="stylesheet" href="notification.css">
+    <!-- 팝업 열기 기능 스크립트 -->
+    <script src="popup.js"></script>
+</head>
+<body>
+    <div class="header">
+        <h1 class="title">나만의 Dream 냉장고</h1>
+        <canvas id="sparkleCanvas"></canvas>
+    </div>
+    <div class="main-container">
+            <!-- 냉동/냉장실 -->
+            <div class="fridge-open">
+                <!-- 냉동실 -->
+                <div id="freeze-section" class="shelf-container">
+                    <h2 class="section-title">냉동실 <img src="냉동실_2.PNG">  (<span id="freeze-count">0</span>)</h2>
+                    <div id="freeze-shelves-container" class="scroll-container">
+                        <div id="todayFreeze" class="freeze-section"></div>
+                        <div id="freeze-shelves" class="freeze-section"></div>
+                    </div>
+                </div>
+                <!-- 냉장실 -->
+                <div id="fridge-section" class="shelf-container">
+                    <h2 class="section-title">냉장실 <img src="냉장실_2.PNG">  (<span id="fridge-count">0</span>)</h2>
+                    <div id="freeze-shelves-container" class="scroll-container">
+                        <div id="todayFridge" class="fridge-section"></div>
+                        <div id="fridge-shelves" class="fridge-section"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- 종 아이콘 -->
+            <div class="notification-icon" onclick="toggleNotification()">
+                🔔
+                <span class="notification-alert" id="notificationAlert">!</span>
+            </div>
+            <script src="notification.js"></script>
+            <!-- 알림 팝업 -->
+            <div class="notification-popup" id="notificationPopup">
+                <div class="popup-header">
+                    <span>알림</span>
+                    <button class="close-btn" onclick="toggleNotification()">✖</button>
+                </div>
+                <div class="popup-content">
+                    <div id="call"></div>
+                </div>
+            </div>
+            <div class="down-open">
+                <div class="recipe-container">
+                    <h2 class="recipe-title">추천 요리</h2>
+                    <div id="receipt-shelves" class = "receipt-section"></div>
+                </div>
+                <button id="use-btn" class="use-btn">사용</button> <!-- 추천 레시피의 사용 버튼 -->
+                <button id="change-btn" class="register-btn">영수증 사진 넣기</button>
+            </div>
+    </div>
+</body>
+
+    <!-- 동적 데이터 로드 및 이벤트 처리 스크립트 -->
+    <script>
+        let buttonsVisible = false; // 버튼이 현재 표시 중인지 상태를 저장
+
+        async function loadIngredients() {
+            try {
+                const response = await fetch('http://localhost:3000/ingredients'); // API 호출
+                const data = await response.json();
+                document.getElementById('todayFridge').innerHTML = '';
+                document.getElementById('fridge-shelves').innerHTML = '';
+                document.getElementById('todayFreeze').innerHTML = '';
+                document.getElementById('freeze-shelves').innerHTML = '';
+
+                const fridgeTotalCount = data.fridge.length + data.todayFridge.length;
+                document.getElementById('fridge-count').textContent = fridgeTotalCount;
+                const freezeTotalCount = data.freeze.length + data.todayFreeze.length;
+                document.getElementById('freeze-count').textContent = freezeTotalCount;
+                // 냉장실 데이터 추가
+                const fridgeContainer = document.getElementById('fridge-shelves');
+                data.fridge.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'shelf';
+                    itemDiv.setAttribute('id',item.id)
+                    itemDiv.innerHTML = `
+                        <img src="${item.Data || 'path/to/default_image.jpg'}">
+                        <div class="name">${item.name}</div>
+                        <div class="expiry-date">유통기한: ${item.expirationDate.split('T')[0]}</div>
+                        <div class="usage-count">사용횟수: ${item.uses || 0}회</div>
+                    `;
+                    fridgeContainer.appendChild(itemDiv);
+                });
+
+                // 냉동실 데이터 추가
+                const freezeContainer = document.getElementById('freeze-shelves');
+                data.freeze.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'shelf';
+                    itemDiv.setAttribute('id',item.id)
+                    itemDiv.innerHTML = `
+                        <img src="${item.Data || 'path/to/default_image.jpg'}">
+                        <div class="name">${item.name}</div>
+                        <div class="expiry-date">유통기한: ${item.expirationDate.split('T')[0]}</div>
+                        <div class="usage-count">사용횟수: ${item.uses || 0}회</div>
+                    `;
+                    freezeContainer.appendChild(itemDiv);
+                });
+                // 오늘 추가한 냉장 식품
+                const todayFridgeContainer = document.getElementById('todayFridge');
+                data.todayFridge.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'shelf';
+                    itemDiv.setAttribute('id',item.id)
+                    itemDiv.innerHTML = `
+                        <img src="${item.Data || 'path/to/default_image.jpg'}">
+                        <div class="name">${item.name}</div>
+                        <div class="expiry-date">유통기한: ${item.expirationDate.split('T')[0]}</div>
+                        <div class="usage-count">사용횟수: ${item.uses || 0}회</div>
+                    `;
+                    todayFridgeContainer.appendChild(itemDiv);
+                });
+                const todayFreezeContainer = document.getElementById('todayFreeze');
+                data.todayFreeze.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'shelf';
+                    itemDiv.setAttribute('id',item.id)
+                    itemDiv.innerHTML = `
+                        <img src="${item.Data || 'path/to/default_image.jpg'}">
+                        <div class="name">${item.name}</div>
+                        <div class="expiry-date">유통기한: ${item.expirationDate.split('T')[0]}</div>
+                        <div class="usage-count">사용횟수: ${item.uses || 0}회</div>
+                    `;
+                    todayFreezeContainer.appendChild(itemDiv);
+                });
+            } catch (error) {
+                console.error('Error loading ingredients:', error);
+                alert('재료 데이터를 가져오는 데 실패했습니다.');
+            }
+        }
+
+        async function loadreceipts() {
+            try {
+                const response = await fetch('http://localhost:3000/receipts'); // API 호출
+                const data = await response.json();
+                const receiptContainer = document.getElementById('receipt-shelves');
+                const ingredientsArray = data.ingredients.trim().split('\n');
+
+                const itemsPerRow = 2; // 한 줄에 표시할 항목 수
+                let currentRow = ''; // 현재 줄의 내용을 저장
+                receiptContainer.innerHTML = ''; // 기존 내용을 초기화
+
+                ingredientsArray.forEach((item, index) => {
+                    currentRow += `${item.trim()}     `; // 항목 추가 (5칸 공백 포함)
+
+                    // 현재 줄이 꽉 찼거나 마지막 항목인 경우 출력
+                    if ((index + 1) % itemsPerRow === 0 || index === ingredientsArray.length - 1) {
+                        const rowDiv = document.createElement('div'); // 새 줄 생성
+                        rowDiv.style.whiteSpace = 'pre-wrap'; // 공백 유지
+                        rowDiv.textContent = currentRow.trim(); // 현재 줄의 내용을 추가
+                        receiptContainer.appendChild(rowDiv); // 줄을 컨테이너에 추가
+                        currentRow = ''; // 현재 줄 초기화
+                    }
+                });
+
+            } catch (error) {
+                console.error('Error loading receipt:', error);
+                alert('레시피 데이터를 가져오는 데 실패했습니다.');
+            }
+        }
+
+
+        // 알람 데이터 서버에서 가져오기
+        $.get('http://localhost:3000/getIngredients', function(data) {
+            console.log(data);  // 데이터가 잘 받아졌는지 확인
+
+            if (data.length > 0) {
+                let notificationContent = '<ul>';
+                data.forEach(function(ingredient) {
+                    notificationContent += `<li>${ingredient.name}: ${ingredient.remainingDays}일 남음</li>`;
+                });
+                notificationContent += '</ul>';
+                $('#call').html(notificationContent);
+            } else {
+                $('#call').html('남은 유효기간이 3일 이하인 재료가 없습니다.');
+            }
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            console.log('데이터 요청 실패:', textStatus, errorThrown);
+            $('#call').html('서버로부터 데이터를 가져오는 데 실패했습니다.');
+        });
+
+        // 추천 요리의 "사용" 버튼 클릭 이벤트
+        document.addEventListener('DOMContentLoaded', () => {
+            const useButton = document.getElementById('use-btn');
+            useButton.addEventListener('click', () => {
+                // 버튼 상태에 따라 추가 또는 제거
+                if (!buttonsVisible) {
+                    // 버튼이 없는 상태 -> 추가
+                    document.querySelectorAll('.shelf').forEach(shelf => {
+                        addActionButtons(shelf);
+                    });
+                } else {
+                    // 버튼이 있는 상태 -> 제거
+                    document.querySelectorAll('.shelf .action-btn-container').forEach(container => {
+                        container.remove();
+                    });
+                }
+                buttonsVisible = !buttonsVisible; // 상태 토글
+            });
+        });
+
+        // 버튼 1과 버튼 2를 선반에 추가하는 함수
+        function addActionButtons(shelf) {
+            // 버튼 컨테이너 생성
+            const btnContainer = document.createElement('div');
+            btnContainer.className = 'action-btn-container'; // 식별을 위한 클래스
+            btnContainer.style.display = 'flex';
+            btnContainer.style.gap = '10px';
+            btnContainer.style.marginTop = '10px';
+
+            // 일부 사용 버튼 생성
+            const btn1 = document.createElement('button');
+            btn1.textContent = '일부 사용';
+            btn1.className = 'action-btn';
+            //버튼마다 이벤트 
+            btn1.onclick = (e) => {
+                const shelfDiv = e.target.closest('.shelf'); // 상위 shelf div 찾기
+                const id = shelfDiv.getAttribute('id');   // id 값 가져오기
+                halfUse(id);
+            };
+
+            // 모두 사용 버튼 생성
+            const btn2 = document.createElement('button');
+            btn2.textContent = '모두 사용';
+            btn2.className = 'action-btn';
+            //버튼마다 이벤트 연결해야겠죠^^
+            btn2.onclick = (e) => {
+                const shelfDiv = e.target.closest('.shelf'); // 상위 shelf div 찾기
+                const id = shelfDiv.getAttribute('id');   // id 값 가져오기
+                fullUse(id);
+            };
+
+            btnContainer.appendChild(btn1);
+            btnContainer.appendChild(btn2);
+            shelf.appendChild(btnContainer);
+        }
+        //일부사용 함수
+        // 누르면 DB를 통해 사용횟수 증가 이벤트
+        function halfUse(id) {
+            fetch('http://localhost:3000/ingredients/halfUse', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id }), // 항목 ID 전달
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('일부 사용 처리 완료!');
+                    // 일부 사용 처리 후 UI에서 해당 항목의 사용횟수만 갱신
+                    const shelfDiv = document.querySelector(`.shelf[id="${id}"]`);
+                    if (shelfDiv) {
+                        const usageCount = shelfDiv.querySelector('.usage-count');
+                        if (usageCount) {
+                            let currentUses = parseInt(usageCount.textContent.replace('사용횟수: ', '').replace('회', '')) || 0;
+                            currentUses += 1; // 사용횟수 증가
+                            usageCount.textContent = `사용횟수: ${currentUses}회`;
+                        }
+                    }
+                } else {
+                    alert('사용 처리 중 오류가 발생했습니다.');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating ingredient use:', error);
+                alert('서버 오류로 인해 요청을 처리할 수 없습니다.');
+            });
+        }
+
+
+        function fullUse(id){
+            fetch('http://localhost:3000/ingredients/fullUse',{
+                method:'post',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id }), // 항목 ID 전달
+                })
+            .then(response => response.json())
+            .then(data =>{
+                if (data.success) {
+                    alert('모두 사용 처리 완료!');
+                    // UI에서 해당 항목 즉시 삭제
+                    const shelfDiv = document.querySelector(`.shelf[id="${id}"]`);
+                    if (shelfDiv) {
+                        shelfDiv.remove(); // 해당 항목 삭제
+                    }
+                } else {
+                    alert('사용 처리 중 오류가 발생했습니다.');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating ingredient use:', error);
+                alert('서버 오류로 인해 요청을 처리할 수 없습니다.');
+            });
+        }
+            
+        const canvas = document.getElementById('sparkleCanvas');
+        const ctx = canvas.getContext('2d');
+        const title = document.querySelector('.title');
+        
+        canvas.width = title.offsetWidth;
+        canvas.height = title.offsetHeight;
+
+        const particles = [];
+
+        function Particle(x, y) {
+            this.x = x;
+            this.y = y;
+            this.size = Math.random() * 3 + 1;
+            this.speedY = Math.random() * 1 - 0.5;
+            this.color = 'rgba(255, 255, 255,' + (Math.random() * 0.5 + 0.5) + ')';
+
+            this.update = function() {
+                this.y += this.speedY;
+                if (this.size > 0.2) this.size -= 0.02;
+            };
+
+            this.draw = function() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            };
+        }
+
+        function handleParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                if (particles[i].size <= 0.2) {
+                    particles.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+
+        function sparkleEffect() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const randomX = Math.random() * canvas.width;
+            const randomY = Math.random() * canvas.height / 2; // 위쪽 절반에서 생성
+
+            particles.push(new Particle(randomX, randomY));
+            handleParticles();
+
+            requestAnimationFrame(sparkleEffect);
+        }
+
+        sparkleEffect();
+
+        // 캔버스 크기 재조정 (반응형 지원)
+        window.addEventListener('resize', () => {
+            canvas.width = title.offsetWidth;
+            canvas.height = title.offsetHeight;
+        });
+        
+        window.onload = async function() {
+        try {
+            // loadIngredients와 loadreceipts를 병렬로 실행
+            await Promise.all([loadIngredients(), loadreceipts()]);
+        } catch (error) {
+            console.error('데이터 로드 중 오류 발생:', error);
+        }
+        };
+    </script>
+</body>
+</html>

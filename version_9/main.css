@@ -1,0 +1,253 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #2c2c2c;
+    display: flex;
+    flex-direction: column; /* 제목과 컨테이너를 위아래로 배치 */
+    align-items: center; /* 수평 중앙 정렬 */
+    height: 100vh; /* 화면 전체 높이 */
+    margin: 0; /* 기본 마진 제거 */
+}
+
+.title-container {
+    position: relative;
+    display: inline-block;
+}
+
+.title {
+    font-size: 48px;
+    font-weight: 700;
+    color: #ffecb3; /* 밝은 색상으로 설정 */
+    font-family: 'Great Vibes', cursive; /* 원하는 필기체 폰트 적용 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+    font-family: 'Pacifico', cursive;
+    z-index: 2;
+    position: relative;
+}
+
+#sparkleCanvas {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 3;}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* 내부 왼쪽 정렬 */
+    justify-content: flex-start; /* 내부 위쪽 정렬 */
+    width: 90%;
+    max-width: 1500px;
+    padding: 20px; /* 내부 여백 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+.fridge-open {
+    display: flex;
+    width: 1500px; /* 전체 너비 */
+    height: 650px;
+    border: 2px solid #8bb8d0;
+    border-radius: 10px;
+    background-color:#d0efff; 
+    padding-bottom: 100px;
+}
+
+.down-open{
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    width: 1500px;
+    height: 150px;
+    border: 2px solid #8bb8d0;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #d0efff;
+}
+
+.scroll-container {
+    max-height: 100%; /* 부모 높이에 맞춤 */
+    overflow-y: auto; /* 세로 스크롤 활성화 */
+    overflow-x: hidden; /* 가로 스크롤 숨김 */
+    box-sizing: border-box; /* 패딩과 경계 포함한 너비 계산 */
+    border: 1px solid #ccc; /* 스크롤 컨테이너 구분선 */
+    background-color: #f9f9f9; /* 배경색 */
+}
+
+#freeze-shelves-container {
+    margin-left: 0; /* 왼쪽 밀림 없애기 */
+}
+
+.freeze-section{
+    width: 710px;
+    padding: 20px;
+    padding-right: 0px;
+    background: url('frozen.png') no-repeat center center; /* 배경 이미지 추가 */
+    background-size: cover; /* 배경 이미지 크기 설정 */
+    overflow-y: auto;
+    max-height: 100%;
+    display: flex;
+    flex-wrap: wrap; /* 선반을 여러 줄로 배치 */
+    gap: 10px; /* 선반 사이의 간격 */
+    align-items: flex-start; /* 선반을 위쪽 정렬 */
+}
+
+.section-title {
+    display: flex; /* 텍스트와 아이콘을 나란히 배치 */
+    align-items: center; /* 텍스트와 아이콘 수직 정렬 */
+    justify-content: center; /* 중앙 정렬 */
+    color: #333; /* 텍스트 색상 */
+    font-size: 28px; /* 텍스트 크기 */
+    font-weight: bold; /* 텍스트 굵게 */
+}
+
+.section-title img {
+    width: 32px; /* 아이콘 크기 */
+    height: 32px; /* 아이콘 크기 */
+    margin-left: 10px; /* 텍스트와 간격 */
+    margin-right: 10px;
+    vertical-align: middle; /* 텍스트와 아이콘 정렬 */
+    position: relative; /* 위치 조정을 위해 relative 사용 */
+    top: 1px; /* 이미지를 아래로 2px 내림. 필요에 따라 값 조정 */
+}
+
+.fridge-section {
+    width: 710px;
+    padding: 20px;
+    padding-right: 0px;
+    border-right: 1px solid #b0c4de;
+    background: url('fridge.png') no-repeat center center; /* 냉장실 배경 이미지 추가 */
+    background-size: cover; /* 배경 이미지 크기 설정 */
+    overflow-y: auto;
+    max-height: 100%;
+    display: flex;
+    flex-wrap: wrap; /* 선반을 여러 줄로 배치 */
+    gap: 10px; /* 선반 사이의 간격 */
+    align-items: flex-start; /* 선반을 위쪽 정렬 */
+}
+
+.fridge-section {
+    border-right: none;
+}
+/*음식 추천*/
+.recipe-container {
+    position: absolute; /* 위치를 정확히 지정 */
+    bottom: 35px; /* 냉장고 아래에서 간격 */
+    left: 210px; /* 냉장고 왼쪽에 정렬 */
+    width: 700px; 
+    height: 100px;
+    background: url('food.png') no-repeat center center; /* 냉장실 배경 이미지 추가 */
+    background-size: cover; /* 배경 이미지 크기 설정 */
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.recipe-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 0px;
+    color: #ffffff;
+    text-align: left;
+    margin-left: 10px;
+    margin-top: 0px;
+}
+
+.receipt-section {
+    text-align: left;
+    margin-left: 10px;
+    color: #ffffff;
+}
+
+/*사용 버튼*/
+.use-btn{
+    position: absolute; /* 위치를 정확히 지정 */
+    bottom: 35px;
+    left: 850px; /* 냉장고 왼쪽에 정렬 */
+    width: 200px; 
+    height: 80px;
+    background-color: #ff6f61;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 20px; /* 버튼 글꼴 크기 조정 */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    background-color: #e55d4d;
+}  
+.register-btn{
+    position: absolute;
+    bottom: 35px; /* 기준 div 아래 */
+    left: 1200px; /* 기존 위치 */
+    width: 250px; 
+    height: 80px; 
+    background-color: #ffcc00; /* 밝은 노란색으로 강조 */
+    color: white;
+    font-size: 22px; /* 글씨 크기 키움 */
+    font-weight: bold; /* 글씨 두껍게 */
+    border: 2px solid #ff9900; /* 테두리 추가 */
+    border-radius: 10px; /* 모서리를 둥글게 */
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255, 153, 0, 0.5); /* 버튼 그림자 추가 */
+    transition: all 0.3s ease; /* 부드러운 애니메이션 효과 */
+}
+
+.use-btn:hover{
+    background-color: #e55d4d;
+}
+.register-btn:hover {
+    background-color: #ff9900; /* 호버 시 더 짙은 노란색으로 변경 */
+    box-shadow: 0 6px 20px rgba(255, 153, 0, 0.8); /* 호버 시 그림자 강조 */
+    transform: scale(1.1); /* 버튼 크기 확대 */
+}
+
+/* 아이콘 추가를 위한 스타일 */
+.register-btn::before {
+    content: '📷'; /* 카메라 이모지 */
+    font-size: 28px;
+    margin-right: 10px; /* 버튼 글자와 간격 추가 */
+    display: inline-block;
+    vertical-align: middle; /* 텍스트와 아이콘 정렬 */
+}
+
+
+
+
+.recipe-container{
+    bottom: 20px; /* 기준 div 아래 */
+    left: 30px;
+}
+
+/* 일부 사용, 모두 사용 */
+.action-btn {
+    padding: 5px 10px; /* 여백을 줄여 버튼 크기 축소 */
+    font-size: 14px; /* 글씨 크기 조정 */
+    font-weight: bold; /* 버튼 글씨 강조 */
+    border: none; /* 기본 테두리 제거 */
+    border-radius: 8px; /* 모서리를 둥글게 */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s; /* 색상 및 크기 변화 애니메이션 추가 */
+    white-space: nowrap; /* 글씨를 한 줄로 강제 */
+}
+
+.action-btn:nth-child(1) {
+    background-color: #FFD700; /* 밝은 초록색 */
+    color: white;
+}
+
+.action-btn:nth-child(1):hover {
+    background-color: #FFCC00; /* 마우스 호버 시 더 짙은 녹색으로 */
+    transform: scale(1.05); /* 살짝 확대되는 효과 추가 */
+}
+
+.action-btn:nth-child(2) {
+    background-color: #dc3545; /* 모두 사용 버튼을 빨간색 계열로 */
+    color: white;
+}
+
+.action-btn:nth-child(2):hover {
+    background-color: #c82333; /* 마우스 호버 시 더 짙은 빨간색으로 */
+    transform: scale(1.05); /* 살짝 확대되는 효과 추가 */
+}

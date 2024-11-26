@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>나만의 Dream 냉장고</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+  <style>
+    /* 제목 스타일 */
+    .title {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Lobster', cursive;
+      font-size: 48px;
+      color: #4CAF50;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      margin: 0;
+    }
+
+    /* 빛 효과 */
+    .light {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 80%);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 1;
+      display: none;
+    }
+
+    /* 빛줄기 */
+    .light-beam {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 10px;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 80%);
+      transform-origin: top;
+      transform: translateX(-50%) scaleY(0); /* 기본 숨김 상태 */
+      opacity: 0;
+      pointer-events: none;
+      z-index: 2;
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    }
+
+    /* 각 빛줄기의 위치와 회전 */
+    .light-beam:nth-child(1) {
+      transform: translateX(-50%) rotate(-15deg) scaleY(0);
+    }
+
+    .light-beam:nth-child(2) {
+      transform: translateX(-50%) rotate(-7deg) scaleY(0);
+    }
+
+    .light-beam:nth-child(3) {
+      transform: translateX(-50%) rotate(0deg) scaleY(0); /* 가운데 */
+    }
+
+    .light-beam:nth-child(4) {
+      transform: translateX(-50%) rotate(7deg) scaleY(0);
+    }
+
+    .light-beam:nth-child(5) {
+      transform: translateX(-50%) rotate(15deg) scaleY(0);
+    }
+  </style>
+</head>
+<body>
+  <h1 class="title">나만의 Dream 냉장고</h1>
+  <div class="fridge">
+    <div class="light" id="light"></div> <!-- 빛 효과 -->
+    <!-- 여러 갈래의 빛줄기 -->
+    <div class="light-beam"></div>
+    <div class="light-beam"></div>
+    <div class="light-beam"></div>
+    <div class="light-beam"></div>
+    <div class="light-beam"></div>
+    <div class="door" id="door-left">
+      <div class="handle"></div>
+    </div>
+    <div class="door-right" id="door-right">
+      <div class="handle"></div>
+    </div>
+    <div class="body"></div>
+  </div>
+
+  <!-- 로그인 및 회원가입 공간 -->
+  <div class="login-space" id="login-space">
+    <form id="login-form">
+      <input type="text" id="user-id" placeholder="Enter your ID">
+      <input type="password" id="user-pw" placeholder="Enter your Password">
+      <div class="button-container">
+        <button type="submit">로그인</button>
+        <button type="button" id="signup-button">회원가입</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

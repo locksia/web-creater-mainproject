@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>영수증 사진 넣기</title>
+    <link rel="stylesheet" href="popup.css"> <!-- 팝업 스타일 -->
+</head>
+<body>
+    <div class="popup-container">
+        <div class="upload-area" id="drop-area">
+            <p>영수증 사진을 png로 넣어주세요</p>
+            <p class="notice-text">사진을 텍스트로 바꾸는데 2 ~ 3초가 소요됩니다</p>
+        </div>
+        
+        <button id="convert-btn" class="convert-btn">변환하기</button>
+    </div>
+    <script>
+        document.getElementById('convert-btn').addEventListener('click', () => {
+            // 새 페이지로 이동
+            window.location.href = 'register.html';
+        });
+
+        // 드래그 앤 드롭 영역과 파일 입력 요소
+        const dropArea = document.getElementById('drop-area');
+        const fileInput = document.getElementById('file-input');
+        const uploadForm = document.getElementById('upload-form');
+
+        // 드래그한 파일을 드롭 영역에 추가
+        dropArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropArea.classList.add('hover');
+        });
+
+        dropArea.addEventListener('dragleave', () => {
+            dropArea.classList.remove('hover');
+        });
+
+        dropArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropArea.classList.remove('hover');
+
+            const file = e.dataTransfer.files[0];
+        if (file) {
+            uploadFile(file);
+        }
+    });
+
+    // 파일 업로드 함수
+    function uploadFile(file) {
+        const formData = new FormData();
+        formData.append('receipt', file);
+
+        fetch('http://localhost:3000/upload', { // Express 서버의 업로드 엔드포인트
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.text())
+        .then(result => {
+            alert('업로드 성공: ' + result);
+        })
+        .catch(error => {
+            console.error('업로드 실패:', error);
+        });
+    }
+</script>
+</body>
+</html>
